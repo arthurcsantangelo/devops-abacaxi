@@ -5,10 +5,19 @@ const { Usuario } = require('../models');
 
 // POST /auth/login  { usuario, senha }
 router.post('/login', async (req, res) => {
-  const { usuario, senha } = req.body;
+  const { usuario, senha } = req.body || {};
+  if (
+    typeof usuario !== 'string' ||
+    !usuario.trim() ||
+    typeof senha !== 'string' ||
+    !senha
+  ) {
+    return res.status(400).json({ erro: 'Informe usuário e senha' });
+  }
+
   const user = await Usuario.findOne({ where: { usuario } });
 
-  if (!user || !(await bcrypt.compare(senha || '', user.senha_hash))) {
+  if (!user || !(await bcrypt.compare(senha, user.senha_hash))) {
     return res.status(401).json({ erro: 'Usuário ou senha inválidos' });
   }
 

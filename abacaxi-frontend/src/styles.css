@@ -28,6 +28,27 @@ main { max-width: 960px; margin: 24px auto; padding: 0 16px; }
   font-size: xx-large;
 }
 
+.seletor-idioma { display: flex; align-items: center; gap: 8px; }
+.seletor-idioma select {
+  padding: 7px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+header .seletor-idioma { color: #fff; }
+
+.aviso-moeda {
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 12px 16px;
+  border-left: 4px solid #f9c80e;
+  border-radius: 4px;
+  background: #fff8d9;
+  color: #333;
+}
+.aviso-moeda p { margin: 0; }
+.aviso-moeda small { display: block; margin-top: 6px; }
+
 .card {
   background: #fff;
   border-radius: 8px;
@@ -57,7 +78,10 @@ input {
 }
 
 .login { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px; }
+.login-conteudo { width: 100%; max-width: 420px; }
+.login .seletor-idioma { justify-content: flex-end; margin-bottom: 12px; }
 .login form { width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 12px; }
+.login .aviso-moeda { margin-top: 0; }
 .login h1 { text-align: center; font-size: 1.4rem; color: #2e7d32; }
 
 .formulario { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
@@ -74,3 +98,8 @@ th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; }
 
 .erro { color: #c62828; }
 .dica { color: #666; font-size: 0.85rem; text-align: center; }
+
+@media (max-width: 700px) {
+  .aviso-moeda { margin-right: 16px; margin-left: 16px; }
+  header .seletor-idioma { width: 100%; }
+}

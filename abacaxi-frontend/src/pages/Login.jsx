@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { api } from '../api.js';
+import SeletorIdioma from '../components/SeletorIdioma.jsx';
+import { traduzir, traduzirErro } from '../i18n.js';
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, locale, onChangeLocale, avisoMoeda }) {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
   async function entrar(e) {
     e.preventDefault();
-    setErro('');
+    setErro(null);
     setCarregando(true);
     try {
       const dados = await api('/auth/login', { method: 'POST', body: { usuario, senha } });
@@ -17,7 +19,7 @@ export default function Login({ onLogin }) {
       localStorage.setItem('usuario', dados.usuario);
       onLogin(dados.usuario);
     } catch (err) {
-      setErro(err.message === 'Failed to fetch' ? 'Não foi possível conectar à API' : err.message);
+      setErro(err);
     } finally {
       setCarregando(false);
     }
@@ -25,24 +27,26 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="login">
-      <form className="card" onSubmit={entrar}>
-        <h1>🍍 Fazenda de Abacaxis</h1>
-        <label>
-          Usuário
-          <input value={usuario} onChange={(e) => setUsuario(e.target.value)} required autoFocus />
-        </label>
-        <label>
-          Senha
-          <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} required />
-        </label>
-        {erro && <p className="erro">{erro}</p>}
-        <button type="submit" disabled={carregando}>
-          {carregando ? 'Entrando...' : 'Entrar'}
-        </button>
-        {carregando && (
-          <p className="dica">No plano gratuito do Render a API pode levar até 1 minuto para "acordar".</p>
-        )}
-      </form>
+      <div className="login-conteudo">
+        <SeletorIdioma locale={locale} onChange={onChangeLocale} />
+        <form className="card" onSubmit={entrar}>
+          <h1>🍍 {traduzir(locale, 'siteTitle')}</h1>
+          <label>
+            {traduzir(locale, 'username')}
+            <input value={usuario} onChange={(e) => setUsuario(e.target.value)} required autoFocus />
+          </label>
+          <label>
+            {traduzir(locale, 'password')}
+            <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} required />
+          </label>
+          {erro && <p className="erro">{traduzirErro(erro, locale)}</p>}
+          <button type="submit" disabled={carregando}>
+            {carregando ? traduzir(locale, 'entering') : traduzir(locale, 'login')}
+          </button>
+          {carregando && <p className="dica">{traduzir(locale, 'apiSleepTip')}</p>}
+        </form>
+        {avisoMoeda}
+      </div>
     </div>
   );
 }
