@@ -9,6 +9,12 @@ Interface web em **React + Vite** do sistema da Fazenda de Abacaxis. Tem as tela
 
 Este projeto só exibe as telas. Os dados vêm da API, que fica na pasta [../abacaxi-backend](../abacaxi-backend) do mesmo repositório (**devops-abacaxi**).
 
+## Idiomas e moeda
+
+O site oferece Português (Brasil), inglês e chinês simplificado. Os valores são armazenados pela API em reais (BRL). Em português, são exibidos em BRL; em inglês e chinês, são exibidos em dólares americanos (USD), usando a cotação diária BRL → USD da [ExchangeRate-API](https://open.er-api.com/v6/latest/BRL). Valores digitados em USD nas telas em inglês ou chinês são convertidos para BRL antes de serem enviados à API.
+
+O site não converte valores para a moeda local do visitante. A cotação precisa estar disponível para exibir valores em USD e registrar vendas nesses idiomas.
+
 ## Como o frontend encontra a API?
 
 Pela variável de ambiente **`VITE_API_URL`**. Veja [src/api.js](src/api.js).
